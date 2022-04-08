@@ -19,9 +19,16 @@ class BookResource(ModelResource):
     def for_delete(self, row, instance):
         return self.fields['name'].clean(row) == ''
 
+class AuthorResource(ModelResource):
+
+    class Meta:
+        model = Author
+
+    def for_delete(self, row, instance):
+        return self.fields['name'].clean(row) == ''
 
 class BookAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ('name', 'author', 'added')
+    list_display = ('id', 'name', 'author', 'added')
     list_filter = ['categories', 'author']
     resource_class = BookResource
 
@@ -31,7 +38,9 @@ class CategoryAdmin(ExportActionModelAdmin):
 
 
 class AuthorAdmin(ImportMixin, admin.ModelAdmin):
-    pass
+    list_display = ('id', 'name', 'birthday')
+    list_filter = ['name', 'birthday']
+    resource_class = AuthorResource
 
 
 class CustomBookAdmin(BookAdmin):
